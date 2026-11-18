@@ -1,0 +1,444 @@
+/* ==========================================================================
+   Centro Cope — Design System (Apple HIG + Google Material Design 3)
+   ========================================================================== */
+
+:root {
+  /* Material Design 3 Tonal Palette */
+  --color-primary: #1B4332;
+  --color-primary-hover: #143326;
+  --color-primary-light: #2D6A4F;
+  --color-on-primary: #FFFFFF;
+
+  --color-accent: #D97706;
+  --color-accent-hover: #B45309;
+  --color-accent-soft: #FEF3C7;
+  --color-on-accent: #FFFFFF;
+
+  --color-surface: #FAF9F6;
+  --color-surface-container: #F0EDE6;
+  --color-surface-elevated: rgba(255, 255, 255, 0.82);
+
+  --color-on-surface: #1F2937;
+  --color-on-surface-variant: #4B5563;
+  --color-outline-subtle: rgba(27, 67, 50, 0.10);
+
+  /* Liquid Glass Tokens (Apple HIG) */
+  --glass-bg: rgba(250, 249, 246, 0.78);
+  --glass-bg-scrolled: rgba(250, 249, 246, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.45);
+  --glass-blur: 18px;
+
+  /* Typography */
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Geometry & Ambient Elevation */
+  --radius-card: 1.5rem; /* 24px */
+  --radius-hero: 2rem;   /* 32px */
+  --shadow-ambient: 0 10px 30px -10px rgba(27, 67, 50, 0.08), 0 4px 12px -4px rgba(27, 67, 50, 0.04);
+  --shadow-ambient-hover: 0 22px 44px -14px rgba(27, 67, 50, 0.14), 0 8px 20px -6px rgba(27, 67, 50, 0.06);
+  --shadow-glass: 0 10px 30px -10px rgba(27, 67, 50, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+
+  /* Motion Physics (Apple Spring Curve) */
+  --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-spring: 0.45s;
+}
+
+/* ==========================================================================
+   Base & Editorial Typography
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6.5rem;
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-editorial {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+::selection {
+  background-color: var(--color-accent-soft);
+  color: var(--color-primary);
+}
+
+/* Keyboard Focus Visibility (WCAG AA + M3 Focus Ring) */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Apple HIG Motion Primitives
+   ========================================================================== */
+
+.spring-transition {
+  transition: all var(--duration-spring) var(--ease-apple);
+}
+
+.spring-media {
+  transition: transform 0.65s var(--ease-apple);
+}
+
+/* ==========================================================================
+   Liquid Glass Floating Navbar
+   ========================================================================== */
+
+.glass-nav {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-glass);
+  transition: all var(--duration-spring) var(--ease-apple);
+}
+
+.glass-nav.is-scrolled {
+  background-color: var(--glass-bg-scrolled);
+  border-color: rgba(27, 67, 50, 0.12);
+  box-shadow: 0 14px 36px -12px rgba(27, 67, 50, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.glass-mobile-panel {
+  background-color: rgba(250, 249, 246, 0.94);
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 24px 48px -16px rgba(27, 67, 50, 0.20);
+  transform-origin: top center;
+  transition: opacity 0.35s var(--ease-apple), transform 0.45s var(--ease-apple), visibility 0.35s var(--ease-apple);
+}
+
+.glass-mobile-panel[data-open="false"] {
+  opacity: 0;
+  transform: translateY(-10px) scale(0.98);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.glass-mobile-panel[data-open="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Active navigation link indicator */
+.nav-link {
+  position: relative;
+  transition: color var(--duration-spring) var(--ease-apple), background-color var(--duration-spring) var(--ease-apple);
+}
+
+.nav-link.is-active {
+  color: var(--color-primary);
+  background-color: rgba(27, 67, 50, 0.08);
+}
+
+/* Animated Hamburger Icon */
+.hamburger-line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 9999px;
+  background-color: currentColor;
+  transition: transform 0.38s var(--ease-apple), opacity 0.25s var(--ease-apple);
+}
+
+.menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ==========================================================================
+   Hero Cinematography & Glass Controls
+   ========================================================================== */
+
+.hero-gradient-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(17, 36, 27, 0.88) 0%,
+    rgba(17, 36, 27, 0.35) 55%,
+    rgba(17, 36, 27, 0.15) 100%
+  );
+}
+
+.glass-pill-dark {
+  background-color: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.glass-btn-hero {
+  background-color: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  transition: all var(--duration-spring) var(--ease-apple);
+}
+
+.glass-btn-hero:hover {
+  background-color: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.55);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Bento Geometry & Surface Cards
+   ========================================================================== */
+
+.bento-card {
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-outline-subtle);
+  box-shadow: var(--shadow-ambient);
+  transition: all var(--duration-spring) var(--ease-apple);
+}
+
+.bento-card:hover {
+  box-shadow: var(--shadow-ambient-hover);
+  border-color: rgba(27, 67, 50, 0.18);
+  transform: translateY(-4px);
+}
+
+.surface-elevated-card {
+  background-color: var(--color-surface-elevated);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-outline-subtle);
+}
+
+/* ==========================================================================
+   Architectural Placeholder (Salón de Eventos)
+   ========================================================================== */
+
+.salon-placeholder {
+  background:
+    radial-gradient(circle at 82% 20%, rgba(217, 119, 6, 0.16), transparent 46%),
+    radial-gradient(circle at 18% 85%, rgba(255, 255, 255, 0.08), transparent 42%),
+    linear-gradient(135deg, #1B4332 0%, #245740 52%, #2D6A4F 100%);
+  position: relative;
+}
+
+.salon-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at center, black 35%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 85%);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Upcoming Badge Subtle Pulse (Cabaña de Hospedaje)
+   ========================================================================== */
+
+@keyframes pulseSoft {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(217, 119, 6, 0);
+  }
+}
+
+.badge-pulse {
+  animation: pulseSoft 2.6s var(--ease-apple) infinite;
+}
+
+/* ==========================================================================
+   Material 3 FAQ Accordion (Zero-Jank CSS Grid Transition)
+   ========================================================================== */
+
+.faq-item {
+  border-radius: 1.25rem;
+  border: 1px solid var(--color-outline-subtle);
+  background-color: var(--color-surface-elevated);
+  transition: all var(--duration-spring) var(--ease-apple);
+}
+
+.faq-item[data-open="true"] {
+  background-color: #FFFFFF;
+  border-color: rgba(27, 67, 50, 0.20);
+  box-shadow: var(--shadow-ambient);
+}
+
+.faq-trigger {
+  min-height: 56px;
+}
+
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.42s var(--ease-apple);
+}
+
+.faq-item[data-open="true"] .faq-panel {
+  grid-template-rows: 1fr;
+}
+
+.faq-panel-inner {
+  overflow: hidden;
+}
+
+.faq-icon {
+  transition: transform 0.42s var(--ease-apple), background-color 0.35s var(--ease-apple), color 0.35s var(--ease-apple);
+}
+
+.faq-item[data-open="true"] .faq-icon {
+  transform: rotate(180deg);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* ==========================================================================
+   Gallery Mosaic & Lightbox Modal
+   ========================================================================== */
+
+.gallery-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-outline-subtle);
+  box-shadow: var(--shadow-ambient);
+  cursor: pointer;
+  transition: all var(--duration-spring) var(--ease-apple);
+}
+
+.gallery-tile:hover {
+  box-shadow: var(--shadow-ambient-hover);
+  transform: translateY(-3px);
+}
+
+.gallery-tile-overlay {
+  background: linear-gradient(
+    to top,
+    rgba(17, 36, 27, 0.82) 0%,
+    rgba(17, 36, 27, 0.22) 48%,
+    rgba(17, 36, 27, 0) 100%
+  );
+  transition: opacity var(--duration-spring) var(--ease-apple);
+}
+
+.lightbox-backdrop {
+  background-color: rgba(14, 28, 21, 0.88);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  transition: opacity 0.35s var(--ease-apple), visibility 0.35s var(--ease-apple);
+}
+
+.lightbox-backdrop[aria-hidden="true"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.lightbox-backdrop[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.lightbox-stage {
+  transition: transform 0.45s var(--ease-apple), opacity 0.35s var(--ease-apple);
+}
+
+.lightbox-backdrop[aria-hidden="true"] .lightbox-stage {
+  transform: scale(0.95) translateY(12px);
+  opacity: 0;
+}
+
+.lightbox-backdrop[aria-hidden="false"] .lightbox-stage {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Map Placeholder Styling
+   ========================================================================== */
+
+.map-placeholder-bg {
+  background-color: #E7E3D8;
+  background-image:
+    radial-gradient(circle at 24% 32%, rgba(27, 67, 50, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 78% 72%, rgba(217, 119, 6, 0.12) 0%, transparent 42%),
+    linear-gradient(to right, rgba(27, 67, 50, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(27, 67, 50, 0.06) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+}
+
+/* ==========================================================================
+   Reveal-on-Scroll (Progressive Enhancement)
+   ========================================================================== */
+
+.js-reveal-ready .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-apple), transform 0.7s var(--ease-apple);
+}
+
+.js-reveal-ready .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 80ms; }
+.reveal-delay-2 { transition-delay: 160ms; }
+.reveal-delay-3 { transition-delay: 240ms; }
+.reveal-delay-4 { transition-delay: 320ms; }
+
+/* ==========================================================================
+   Touch Ergonomics & Reduced Motion
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  a[class*="btn"],
+  button,
+  .touch-target {
+    min-height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js-reveal-ready .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
