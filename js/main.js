@@ -3,7 +3,7 @@
 /**
  * Centro Cope — Landing Page Interactive Controller
  * Pure ES6+ modules: Smart Floating Navbar, Accessible M3 FAQ Accordion,
- * Apple-style Gallery Lightbox, and Progressive Reveal-on-Scroll.
+ * Apple-style Gallery Lightbox, SINPE Móvil Quick-Copy, and Progressive Reveal-on-Scroll.
  */
 
 (() => {
@@ -369,6 +369,77 @@
   }
 
   /* ========================================================================
+     5. SINPE Móvil Quick-Copy Button
+     ======================================================================== */
+  function initSinpeCopy() {
+    const copyBtn = document.getElementById('copy-sinpe-btn');
+    if (!copyBtn) return;
+
+    const labelEl = copyBtn.querySelector('[data-copy-label]');
+    const copyIcon = copyBtn.querySelector('[data-copy-icon]');
+    const checkIcon = copyBtn.querySelector('[data-check-icon]');
+    const liveStatus = document.getElementById('copy-sinpe-status');
+
+    const defaultLabel = labelEl ? labelEl.textContent.trim() : 'Copiar número';
+    let resetTimer = null;
+
+    const showCopiedState = () => {
+      if (labelEl) labelEl.textContent = '¡Copiado!';
+      if (copyIcon) copyIcon.classList.add('hidden');
+      if (checkIcon) checkIcon.classList.remove('hidden');
+
+      copyBtn.classList.remove('bg-primary', 'hover:bg-primary-hover');
+      copyBtn.classList.add('bg-[#15803D]', 'hover:bg-[#166534]');
+      copyBtn.setAttribute('data-copied', 'true');
+
+      if (liveStatus) {
+        liveStatus.textContent = 'Número SINPE Móvil 84893020 copiado al portapapeles.';
+      }
+
+      if (resetTimer) window.clearTimeout(resetTimer);
+      resetTimer = window.setTimeout(() => {
+        if (labelEl) labelEl.textContent = defaultLabel;
+        if (copyIcon) copyIcon.classList.remove('hidden');
+        if (checkIcon) checkIcon.classList.add('hidden');
+
+        copyBtn.classList.remove('bg-[#15803D]', 'hover:bg-[#166534]');
+        copyBtn.classList.add('bg-primary', 'hover:bg-primary-hover');
+        copyBtn.removeAttribute('data-copied');
+        if (liveStatus) liveStatus.textContent = '';
+      }, 2000);
+    };
+
+    const fallbackCopyText = (text) => {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      const copied = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return copied;
+    };
+
+    copyBtn.addEventListener('click', async () => {
+      const numberToCopy = '84893020';
+      try {
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          await navigator.clipboard.writeText(numberToCopy);
+          showCopiedState();
+        } else if (fallbackCopyText(numberToCopy)) {
+          showCopiedState();
+        }
+      } catch {
+        if (fallbackCopyText(numberToCopy)) {
+          showCopiedState();
+        }
+      }
+    });
+  }
+
+  /* ========================================================================
      Bootstrap
      ======================================================================== */
   document.addEventListener('DOMContentLoaded', () => {
@@ -376,5 +447,6 @@
     initFaqAccordion();
     initGalleryLightbox();
     initRevealOnScroll();
+    initSinpeCopy();
   });
 })();
